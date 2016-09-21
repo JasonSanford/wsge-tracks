@@ -1,5 +1,6 @@
 body {
   padding-top: 45px;
+  background-color: #f9f9f9;
 }
 
 .topbar {
@@ -61,4 +62,11 @@ body {
 
 .playlist td.track a.spotify:hover {
   color: #000;
+}
+
+.playlist td.paused {
+  font-size: 4em;
+  color: #999;
+  text-align: center;
+  padding-top: 50px;
 }

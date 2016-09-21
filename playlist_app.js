@@ -18,6 +18,7 @@ class App {
     this.lastSong = null;
     this.songs = null;
     this.state = STATE_ON;
+    this.$playlist = $('.playlist');
     this.songMetaCache = new SongMetaCache();
 
     this.startFetching();
@@ -51,16 +52,16 @@ class App {
         this.lastSong.meta = songMeta;
 
         this.showNewSongNotification();
+
+        const newSongs = $songs.map(function (i, song) {
+          return this.songFromTableRow(cheerio(song));
+        }.bind(this)).toArray();
+
+        this.songs = newSongs;
+
+        this.refreshPlaylist();
       }.bind(this));
     }
-
-    const newSongs = $songs.map(function (i, song) {
-      return this.songFromTableRow(cheerio(song));
-    }.bind(this)).toArray();
-
-    this.songs = newSongs;
-
-    this.refreshPlaylist();
   }
 
   setState(onOrOff) {
@@ -74,6 +75,8 @@ class App {
 
     if (this.state === STATE_OFF) {
       clearInterval(this.fetchInterval);
+      this.lastSong = null;
+      this.pausePlaylist();
     } else {
       this.startFetching();
     }
@@ -120,9 +123,7 @@ class App {
   }
 
   refreshPlaylist() {
-    const $playlist = $('.playlist');
-
-    $playlist.html('');
+    this.$playlist.html('');
 
     this.songs.forEach(function (song) {
       let spotify = '';
@@ -131,14 +132,18 @@ class App {
         spotify += '<a href="' + song.meta.uri + '" class="spotify"><i class="fa fa-spotify" aria-hidden="true"></i></a>';
       }
 
-      $playlist.append(
+      this.$playlist.append(
         `<tr>
           <td class="track">${song.track} ${spotify}</td>
           <td>${song.artist}</td>
           <td class="time">${song.time}</td>
         </tr>`
       );
-    });
+    }.bind(this));
+  }
+
+  pausePlaylist() {
+    this.$playlist.html('<tr><td class="paused">paused</td></tr>');
   }
 }
 
