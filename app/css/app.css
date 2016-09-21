@@ -54,3 +54,11 @@ body {
 .playlist td.track {
   font-weight: bold;
 }
+
+.playlist td.track a.spotify {
+  color: #000;
+}
+
+.playlist td.track a.spotify:hover {
+  color: #000;
+}

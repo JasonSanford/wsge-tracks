@@ -90,7 +90,15 @@ class App {
     const artist = cheerio($songParts[1]).text();
     const time = cheerio($songParts[2]).text();
 
-    return new Song(track, artist, time);
+    const song = new Song(track, artist, time);
+
+    const songMeta = this.songMetaCache.checkMeta(song);
+
+    if (songMeta) {
+      song.meta = songMeta;
+    }
+
+    return song;
   }
 
   showNewSongNotification() {
@@ -117,9 +125,15 @@ class App {
     $playlist.html('');
 
     this.songs.forEach(function (song) {
+      let spotify = '';
+
+      if (song.meta) {
+        spotify += '<a href="' + song.meta.uri + '" class="spotify"><i class="fa fa-spotify" aria-hidden="true"></i></a>';
+      }
+
       $playlist.append(
         `<tr>
-          <td class="track">${song.track}</td>
+          <td class="track">${song.track} ${spotify}</td>
           <td>${song.artist}</td>
           <td class="time">${song.time}</td>
         </tr>`
