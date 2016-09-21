@@ -24,7 +24,7 @@ class Song {
     return this._artist.trim();
   }
   get time() {
-    return this._track.trim();
+    return this._time.split('@')[1].trim().toLowerCase();
   }
 
   isSameAs(otherSong) {

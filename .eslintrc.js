@@ -4,7 +4,8 @@ module.exports = {
         "node": true
     },
     "globals": {
-      "Notification": true
+      "Notification": true,
+      "$": true
     },
     "extends": "eslint:recommended",
     "rules": {

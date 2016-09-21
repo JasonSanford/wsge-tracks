@@ -14,6 +14,7 @@ const PLAYLIST_URL = 'http://playlist.wsge.org/full_list.php';
 class App {
   constructor() {
     this.lastSong = null;
+    this.songs = null;
     this.state = STATE_ON;
 
     this.startFetching();
@@ -41,19 +42,15 @@ class App {
     if (!this.lastSong || (this.lastSong && !this.lastSong.isSameAs(recentSong))) {
       this.lastSong = recentSong;
       this.showNewSongNotification();
-    } else {
-      //console.log('Same song');
-      //console.log(recentSong);
     }
 
-    /*$songs.each(function (i, song) {
-      const $songParts = cheerio(song).find('td');
+    const newSongs = $songs.map(function (i, song) {
+      return this.songFromTableRow(cheerio(song));
+    }.bind(this)).toArray();
 
-      console.log('song .......');
-      $songParts.each(function (o, part) {
-        console.log(cheerio(part).text());
-      });
-    });*/
+    this.songs = newSongs;
+
+    this.refreshPlaylist();
   }
 
   setState(onOrOff) {
@@ -88,18 +85,32 @@ class App {
 
   showNewSongNotification() {
     const song = this.lastSong;
-    console.log('New Song!');
+
     const notificationOptions = {
       title: song.track,
       body: song.artist,
       silent: true
     };
+
     const notification = new Notification(song.track, notificationOptions);
     notification.onclick = function () {
       console.log('they clicked it');
     };
-    console.log(song);
-    //ipc.send('new-song', this.lastSong);
+  }
+
+  refreshPlaylist() {
+    const $playlist = $('.playlist');
+    $playlist.html('');
+
+    this.songs.forEach(function (song) {
+      $playlist.append(
+        `<tr>
+          <td class="track">${song.track}</td>
+          <td>${song.artist}</td>
+          <td class="time">${song.time}</td>
+        </tr>`
+      );
+    });
   }
 }
 

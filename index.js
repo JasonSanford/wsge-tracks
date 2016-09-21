@@ -7,7 +7,7 @@ const menubar = require('menubar');
 const mb = menubar({
   dir: __dirname + '/app',
   width: 440,
-  height: 230,
+  height: 400,
   preloadWindow: true
 });
 
@@ -19,10 +19,4 @@ mb.on('after-create-window', function () {
 
 mb.on('ready', function ready () {
   console.log('app is ready');
-  //new PlaylistApp(mb.window);
-
-  /*setTimeout(function () {
-    app.setState(PlaylistApp.STATE_OFF);
-  }, 60100);*/
-
 });

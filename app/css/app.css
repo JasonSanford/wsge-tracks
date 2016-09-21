@@ -1,0 +1,56 @@
+body {
+  padding-top: 45px;
+}
+
+.topbar {
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  padding: 10px 0;
+}
+
+.topbar h3 {
+  text-align: center;
+  color: #f0f0f0;
+  margin: 0;
+}
+
+.topbar .switch-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 12px;
+}
+
+.topbar .quit-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 12px;
+  margin-top: 0;
+}
+
+.topbar .quit-container .quit {
+  color: #f0f0f0;
+  font-weight: bold;
+  font-size: 2em;
+}
+
+.topbar .quit-container .quit:hover {
+  text-decoration: none;
+}
+
+.playlist-table {
+  margin-bottom: 0;
+}
+
+.playlist td.time {
+  width: 17%;
+}
+
+.playlist td.track {
+  font-weight: bold;
+}
