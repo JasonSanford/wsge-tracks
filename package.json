@@ -1,0 +1,29 @@
+{
+  "name": "wsge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "electron-packager . 'WSGE' --platform=darwin --arch=x64 --version=0.36.0 --icon=assets/img/icon.png.icns",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JasonSanford/wsge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JasonSanford/wsge/issues"
+  },
+  "homepage": "https://github.com/JasonSanford/wsge#readme",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "menubar": "^5.1.0",
+    "request": "^2.75.0"
+  },
+  "devDependencies": {
+    "electron-packager": "^8.0.0",
+    "electron-prebuilt": "^1.4.0"
+  }
+}
