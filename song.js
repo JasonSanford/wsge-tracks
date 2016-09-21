@@ -1,5 +1,7 @@
 'use strict';
 
+const crypt = require('crypto');
+
 class Song {
   constructor(track, artist, time) {
     this._track = track;
@@ -16,6 +18,9 @@ class Song {
   set time(time) {
     this._time = time;
   }
+  set meta(meta) {
+    this._meta = meta;
+  }
 
   get track() {
     return this._track.trim();
@@ -25,6 +30,16 @@ class Song {
   }
   get time() {
     return this._time.split('@')[1].trim().toLowerCase();
+  }
+  get meta() {
+    return this._meta;
+  }
+
+  get hashContents() {
+    return this.track + this.artist + this.time;
+  }
+  get hash() {
+    return crypt.createHash('md5').update(this.hashContents).digest('hex');
   }
 
   isSameAs(otherSong) {

@@ -1,9 +1,11 @@
 'use strict';
 
+const shell = require('electron').shell;
 const request = require('request');
 const cheerio = require('cheerio');
 
 const Song = require('./song');
+const SongMetaCache = require('./song_meta_cache');
 
 const STATE_OFF = 'off';
 const STATE_ON = 'on';
@@ -16,6 +18,7 @@ class App {
     this.lastSong = null;
     this.songs = null;
     this.state = STATE_ON;
+    this.songMetaCache = new SongMetaCache();
 
     this.startFetching();
   }
@@ -31,8 +34,7 @@ class App {
 
   processPlaylist(error, response, html) {
     if (error) {
-      console.log('Error fetching playlist:');
-      return console.log(error);
+      return console.log('Error fetching playlist:', error);
     }
 
     const $doc = cheerio.load(html);
@@ -41,7 +43,15 @@ class App {
 
     if (!this.lastSong || (this.lastSong && !this.lastSong.isSameAs(recentSong))) {
       this.lastSong = recentSong;
-      this.showNewSongNotification();
+      this.songMetaCache.forceMeta(this.lastSong, function (error, songMeta) {
+        if (error) {
+          return console.log('meta error: ', error);
+        }
+
+        this.lastSong.meta = songMeta;
+
+        this.showNewSongNotification();
+      }.bind(this));
     }
 
     const newSongs = $songs.map(function (i, song) {
@@ -93,13 +103,17 @@ class App {
     };
 
     const notification = new Notification(song.track, notificationOptions);
+
     notification.onclick = function () {
-      console.log('they clicked it');
-    };
+      if (song.meta) {
+        shell.openExternal(song.meta.uri);
+      }
+    }.bind(this);
   }
 
   refreshPlaylist() {
     const $playlist = $('.playlist');
+
     $playlist.html('');
 
     this.songs.forEach(function (song) {
