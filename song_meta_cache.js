@@ -1,3 +1,5 @@
+'use strict';
+
 const request = require('request');
 
 const SongMeta = require('./song_meta');

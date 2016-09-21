@@ -1,3 +1,5 @@
+'use strict';
+
 class SongMeta {
   constructor(data) {
     this.data = data;
