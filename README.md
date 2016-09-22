@@ -17,3 +17,19 @@ Simple notifications:
 Notification clicks open Spotify:
 
 ![](screenshots/notification.gif)
+
+### Running
+
+First, install dependencies:
+
+`npm install`
+
+Then run it:
+
+`npm start`
+
+### Building
+
+To build a MacOS app:
+
+`npm run build`
